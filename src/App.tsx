@@ -3,10 +3,15 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Index from "./pages/Index";
 import AlunoDashboard from "./pages/AlunoDashboard";
 import ProfessorDashboard from "./pages/ProfessorDashboard";
 import SalaDeAula from "./pages/SalaDeAula";
 import Biblioteca from "./pages/Biblioteca";
+import CrecheDashboard from "./pages/CrecheDashboard";
+import FundamentalDashboard from "./pages/FundamentalDashboard";
+import MedioDashboard from "./pages/MedioDashboard";
+import GraduacaoDashboard from "./pages/GraduacaoDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -18,7 +23,12 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AlunoDashboard />} />
+          <Route path="/" element={<Index />} />
+          <Route path="/creche" element={<CrecheDashboard />} />
+          <Route path="/fundamental" element={<FundamentalDashboard />} />
+          <Route path="/medio" element={<MedioDashboard />} />
+          <Route path="/graduacao" element={<GraduacaoDashboard />} />
+          <Route path="/aluno" element={<AlunoDashboard />} />
           <Route path="/disciplinas" element={<AlunoDashboard />} />
           <Route path="/desempenho" element={<AlunoDashboard />} />
           <Route path="/biblioteca" element={<Biblioteca />} />
