@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import AppLayout from "@/components/layout/AppLayout";
 
 const modulosMock = [
@@ -29,9 +30,7 @@ const SalaDeAula = () => {
 
   const currentAula = modulosMock.flatMap((m) => m.conteudos).find((c) => c.id === selectedAula);
 
-  const toggleModule = (titulo: string) => {
-    setOpenModules((prev) => ({ ...prev, [titulo]: !prev[titulo] }));
-  };
+  const toggleModule = (titulo: string) => setOpenModules((prev) => ({ ...prev, [titulo]: !prev[titulo] }));
 
   const getIcon = (tipo: string) => {
     if (tipo === "EXERCICIO") return "fas fa-pencil-alt";
@@ -40,173 +39,200 @@ const SalaDeAula = () => {
   };
 
   return (
-    <AppLayout role="aluno">
-      <div className="flex flex-col lg:flex-row h-[calc(100vh-200px)] max-w-[1800px] mx-auto gap-6 px-6 pb-6">
-        {/* Main Content Area */}
-        <div className="relative flex flex-col flex-1 min-w-0 overflow-hidden border shadow-2xl glass-card rounded-[2.5rem] group transition-all duration-300">
+    <AppLayout role="aluno" auroraVariant="deep">
+      <div className="flex flex-col lg:flex-row h-[calc(100vh-200px)] max-w-[1800px] mx-auto gap-5 px-6 pb-6">
+        {/* Main Content */}
+        <motion.div
+          initial={{ opacity: 0, x: -16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
+          className="relative flex flex-col flex-1 min-w-0 overflow-hidden glass-card-strong rounded-[2rem] group"
+        >
           {currentAula?.tipo === "VIDEO" ? (
             <div className="relative w-full overflow-hidden aspect-video bg-foreground">
-              <div className="absolute inset-0 flex flex-col items-center justify-center text-muted-foreground">
-                <i className="mb-4 text-6xl fas fa-play-circle text-card/20" />
-                <p className="text-primary-foreground/60">Clique para reproduzir o vídeo</p>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  className="w-20 h-20 rounded-full bg-card/20 backdrop-blur-md flex items-center justify-center cursor-pointer border border-card/20"
+                >
+                  <i className="text-3xl fas fa-play text-primary-foreground/80 ml-1.5" />
+                </motion.div>
+                <p className="mt-4 text-sm text-primary-foreground/40 font-medium">Clique para reproduzir</p>
               </div>
             </div>
           ) : currentAula?.tipo === "EXERCICIO" ? (
-            <div className="flex flex-col w-full h-full p-10 overflow-y-auto bg-muted/30 custom-scrollbar">
+            <div className="flex flex-col w-full h-full p-10 overflow-y-auto bg-muted/10 custom-scrollbar">
               <div className="w-full max-w-3xl mx-auto">
-                <span className="px-3 py-1 mb-4 text-xs font-bold rounded-full bg-primary text-primary-foreground inline-block">
+                <span className="px-3 py-1 mb-4 text-[10px] font-bold rounded-lg bg-primary/10 text-primary inline-block">
                   <i className="mr-1 fas fa-pencil-alt" /> Prática
                 </span>
-                <h2 className="mb-6 text-3xl font-bold font-display text-foreground">{currentAula.titulo}</h2>
+                <h2 className="mb-6 text-2xl font-bold font-display text-foreground">{currentAula.titulo}</h2>
 
-                <div className="p-8 mb-6 bg-card border shadow-sm border-border rounded-3xl">
-                  <p className="mb-6 text-lg leading-relaxed text-foreground/80">Responda a questão abaixo:</p>
-                  <div className="space-y-3">
+                <div className="p-7 mb-6 glass-card-strong rounded-2xl">
+                  <p className="mb-6 text-base leading-relaxed text-muted-foreground">Responda a questão abaixo:</p>
+                  <div className="space-y-2.5">
                     {["Alternativa A", "Alternativa B", "Alternativa C", "Alternativa D"].map((alt) => (
                       <label
                         key={alt}
-                        className="flex items-center gap-4 p-4 transition border cursor-pointer rounded-2xl bg-muted/30 hover:bg-primary/5 border-border hover:border-primary/30 group"
+                        className="flex items-center gap-4 p-4 glass-surface rounded-xl cursor-pointer hover:bg-primary/5 group transition-colors"
                       >
-                        <input type="radio" name="resp" className="w-5 h-5 text-primary border-border focus:ring-primary" />
-                        <span className="font-medium text-foreground group-hover:text-primary">{alt}</span>
+                        <input type="radio" name="resp" className="w-4 h-4 text-primary border-border focus:ring-primary accent-primary" />
+                        <span className="font-medium text-foreground group-hover:text-primary transition-colors">{alt}</span>
                       </label>
                     ))}
                   </div>
                 </div>
                 <div className="flex justify-end">
-                  <button className="px-8 py-3 font-bold transition transform shadow-lg bg-primary text-primary-foreground rounded-xl hover:bg-primary/90 hover:-translate-y-1">
+                  <motion.button
+                    whileHover={{ scale: 1.03, y: -1 }}
+                    whileTap={{ scale: 0.97 }}
+                    className="px-7 py-3 font-bold bg-primary text-primary-foreground rounded-xl shadow-lg hover:shadow-neon transition-all"
+                  >
                     Enviar
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             </div>
           ) : (
             <>
-              <div className="flex items-center justify-center w-full h-64 bg-gradient-to-br from-primary/10 to-secondary/10">
+              <div className="flex items-center justify-center w-full h-56 bg-gradient-to-br from-primary/8 to-secondary/8">
                 <div className="text-center">
-                  <div className="flex items-center justify-center w-20 h-20 mx-auto mb-4 bg-card shadow-lg rounded-2xl text-primary">
-                    <i className="text-4xl fas fa-file-alt" />
-                  </div>
-                  <h2 className="text-2xl font-bold text-primary font-display">{currentAula?.titulo}</h2>
+                  <motion.div
+                    initial={{ scale: 0.8 }}
+                    animate={{ scale: 1 }}
+                    className="flex items-center justify-center w-16 h-16 mx-auto mb-4 glass-card-strong shadow-lg rounded-2xl text-primary"
+                  >
+                    <i className="text-3xl fas fa-file-alt" />
+                  </motion.div>
+                  <h2 className="text-xl font-bold text-primary font-display">{currentAula?.titulo}</h2>
                 </div>
               </div>
               <div className="flex-1 p-8 overflow-y-auto custom-scrollbar">
-                <h1 className="text-3xl font-bold leading-tight font-display text-foreground mb-2">
-                  {currentAula?.titulo || "Aula"}
-                </h1>
-                <p className="flex items-center gap-2 mt-1 text-sm text-muted-foreground mb-6">
+                <h1 className="text-2xl font-bold font-display text-foreground mb-2">{currentAula?.titulo || "Aula"}</h1>
+                <p className="flex items-center gap-2 text-sm text-muted-foreground/60 mb-6">
                   <i className="far fa-clock" /> Módulo de Aprendizado
                 </p>
-                <div className="leading-relaxed text-foreground/80">
+                <div className="leading-relaxed text-muted-foreground space-y-4">
                   <p>Conteúdo da aula será exibido aqui. Este é o material de texto para estudo do aluno, com explicações detalhadas sobre o tema abordado.</p>
-                  <br />
                   <p>O professor pode adicionar texto formatado, imagens, links e materiais complementares para enriquecer a experiência de aprendizado.</p>
                 </div>
               </div>
             </>
           )}
-        </div>
+        </motion.div>
 
         {/* Sidebar */}
-        <div className="w-full lg:w-[400px] flex flex-col glass-card rounded-[2.5rem] shadow-2xl overflow-hidden h-full shrink-0">
-          <div className="p-4 border-b bg-muted/40 border-border">
-            <div className="flex p-1 rounded-xl bg-muted/50">
-              {(
-                [
-                  { key: "aulas", icon: "fas fa-list-ul", label: "Aulas", activeColor: "text-primary" },
-                  { key: "conteudos", icon: "fas fa-folder-open", label: "Conteúdos", activeColor: "text-secondary" },
-                  { key: "ferramentas", icon: "fas fa-toolbox", label: "Tools", activeColor: "text-success" },
-                ] as const
-              ).map((tab) => (
+        <motion.div
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.1, duration: 0.5 }}
+          className="w-full lg:w-[380px] flex flex-col glass-card-strong rounded-[2rem] overflow-hidden h-full shrink-0"
+        >
+          <div className="p-4 border-b border-border/20">
+            <div className="flex p-1.5 rounded-xl glass-surface">
+              {([
+                { key: "aulas", icon: "fas fa-list-ul", label: "Aulas" },
+                { key: "conteudos", icon: "fas fa-folder-open", label: "Conteúdos" },
+                { key: "ferramentas", icon: "fas fa-toolbox", label: "Tools" },
+              ] as const).map((tab) => (
                 <button
                   key={tab.key}
                   onClick={() => setSidebarTab(tab.key)}
-                  className={`flex items-center justify-center flex-1 gap-2 py-2.5 text-sm font-bold transition-all rounded-lg ${
-                    sidebarTab === tab.key
-                      ? `bg-card ${tab.activeColor} shadow-sm`
-                      : "text-muted-foreground hover:text-foreground"
+                  className={`flex items-center justify-center flex-1 gap-2 py-2.5 text-[12px] font-semibold transition-all rounded-lg ${
+                    sidebarTab === tab.key ? "bg-card text-primary shadow-sm" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <i className={tab.icon} /> {tab.label}
+                  <i className={`${tab.icon} text-[11px]`} /> {tab.label}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex-1 px-4 py-4 space-y-4 overflow-y-auto custom-scrollbar">
-            {sidebarTab === "aulas" && (
-              <div className="space-y-3">
-                {modulosMock.map((modulo) => (
-                  <div key={modulo.titulo} className="overflow-hidden bg-card border shadow-sm border-border rounded-2xl">
-                    <button
-                      onClick={() => toggleModule(modulo.titulo)}
-                      className="flex items-center justify-between w-full p-4 transition bg-muted/30 hover:bg-muted"
-                    >
-                      <span className="text-xs font-bold tracking-widest uppercase text-muted-foreground">{modulo.titulo}</span>
-                      <i className={`text-xs fas fa-chevron-down text-muted-foreground transition-transform ${openModules[modulo.titulo] ? "rotate-180" : ""}`} />
-                    </button>
+          <div className="flex-1 px-4 py-4 space-y-3 overflow-y-auto custom-scrollbar">
+            {sidebarTab === "aulas" && modulosMock.map((modulo) => (
+              <div key={modulo.titulo} className="overflow-hidden glass-surface rounded-2xl">
+                <button
+                  onClick={() => toggleModule(modulo.titulo)}
+                  className="flex items-center justify-between w-full p-4 hover:bg-muted/30 transition"
+                >
+                  <span className="text-[10px] font-bold tracking-[0.15em] uppercase text-muted-foreground/60">{modulo.titulo}</span>
+                  <motion.i
+                    animate={{ rotate: openModules[modulo.titulo] ? 180 : 0 }}
+                    className="text-[10px] fas fa-chevron-down text-muted-foreground/40"
+                  />
+                </button>
 
-                    {openModules[modulo.titulo] && (
-                      <div className="divide-y divide-muted/50">
-                        {modulo.conteudos.map((aula) => (
-                          <button
-                            key={aula.id}
-                            onClick={() => setSelectedAula(aula.id)}
-                            className={`flex items-center gap-3 p-3 transition border-l-4 hover:bg-primary/5 group w-full text-left ${
-                              selectedAula === aula.id
-                                ? "border-primary bg-primary/5"
-                                : "border-transparent hover:border-primary/30"
-                            }`}
-                          >
-                            <div className="flex items-center justify-center w-8 h-8 bg-card border rounded-full border-border text-[10px] text-muted-foreground group-hover:border-primary/40 group-hover:text-primary shadow-sm">
-                              <i className={getIcon(aula.tipo)} />
-                            </div>
-                            <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium leading-tight text-foreground group-hover:text-primary line-clamp-2">
-                                {aula.titulo}
-                              </p>
-                              <p className="text-[10px] text-muted-foreground mt-0.5 capitalize">{aula.tipo.toLowerCase()}</p>
-                            </div>
-                          </button>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {openModules[modulo.titulo] && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    className="divide-y divide-border/15"
+                  >
+                    {modulo.conteudos.map((aula) => (
+                      <motion.button
+                        key={aula.id}
+                        whileHover={{ x: 3 }}
+                        onClick={() => setSelectedAula(aula.id)}
+                        className={`flex items-center gap-3 p-3.5 w-full text-left transition-all ${
+                          selectedAula === aula.id
+                            ? "bg-primary/5 border-l-2 border-primary"
+                            : "border-l-2 border-transparent hover:bg-primary/3"
+                        }`}
+                      >
+                        <div className={`flex items-center justify-center w-8 h-8 rounded-lg text-[10px] shadow-sm shrink-0 ${
+                          selectedAula === aula.id
+                            ? "bg-primary/10 text-primary"
+                            : "glass-surface text-muted-foreground"
+                        }`}>
+                          <i className={getIcon(aula.tipo)} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className={`text-sm font-medium leading-tight line-clamp-2 ${
+                            selectedAula === aula.id ? "text-primary" : "text-foreground"
+                          }`}>
+                            {aula.titulo}
+                          </p>
+                          <p className="text-[9px] text-muted-foreground/50 mt-0.5 capitalize">{aula.tipo.toLowerCase()}</p>
+                        </div>
+                      </motion.button>
+                    ))}
+                  </motion.div>
+                )}
               </div>
-            )}
+            ))}
 
             {sidebarTab === "conteudos" && (
-              <div className="flex flex-col items-center justify-center py-12 text-center">
-                <i className="fas fa-folder-open text-4xl text-muted-foreground/40 mb-3" />
-                <p className="text-sm text-muted-foreground">Materiais complementares aparecerão aqui.</p>
+              <div className="flex flex-col items-center justify-center py-16 text-center">
+                <i className="fas fa-folder-open text-4xl text-muted-foreground/20 mb-3" />
+                <p className="text-sm text-muted-foreground/50 font-medium">Materiais complementares aparecerão aqui.</p>
               </div>
             )}
 
             {sidebarTab === "ferramentas" && (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {[
                   { icon: "fas fa-robot", label: "Assistente IA", desc: "Tire dúvidas com inteligência artificial" },
                   { icon: "fas fa-calculator", label: "Calculadora", desc: "Calculadora científica integrada" },
                   { icon: "fas fa-sticky-note", label: "Anotações", desc: "Salve suas notas de aula" },
                 ].map((tool) => (
-                  <button
+                  <motion.button
                     key={tool.label}
-                    className="flex items-center gap-4 w-full p-4 transition-all bg-card border border-border rounded-2xl hover:bg-primary/5 hover:border-primary/20 group"
+                    whileHover={{ x: 3 }}
+                    className="flex items-center gap-4 w-full p-4 glass-surface rounded-xl hover:bg-primary/5 group transition-colors"
                   >
-                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary/8 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                       <i className={tool.icon} />
                     </div>
                     <div className="text-left">
-                      <p className="text-sm font-bold text-foreground">{tool.label}</p>
-                      <p className="text-xs text-muted-foreground">{tool.desc}</p>
+                      <p className="text-sm font-semibold text-foreground">{tool.label}</p>
+                      <p className="text-[11px] text-muted-foreground/50">{tool.desc}</p>
                     </div>
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </div>
     </AppLayout>
   );
