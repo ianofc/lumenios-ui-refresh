@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import AppLayout from "@/components/layout/AppLayout";
 
 const diasSemana = ["Segunda", "Terça", "Quarta", "Quinta", "Sexta"];
@@ -25,14 +26,19 @@ const ProfessorDashboard = () => {
   });
 
   return (
-    <AppLayout role="professor">
-      <div className="max-w-[1600px] mx-auto px-4 md:px-8 pb-20 space-y-8">
+    <AppLayout role="professor" auroraVariant="default">
+      <div className="max-w-[1600px] mx-auto px-6 pb-20 space-y-8">
         {/* Hero */}
-        <section className="relative rounded-[2.5rem] overflow-hidden shadow-2xl min-h-[320px] group bg-foreground border border-foreground/80 animate-fade-in-down">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="relative rounded-[2rem] overflow-hidden shadow-elevated min-h-[300px] group bg-foreground"
+        >
           <div className="absolute inset-0 overflow-hidden">
             <img
               src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=1600&q=80"
-              className="w-full h-full object-cover transition-transform duration-[5000ms] ease-in-out group-hover:scale-110 opacity-40"
+              className="w-full h-full object-cover transition-transform duration-[6000ms] ease-out group-hover:scale-105 opacity-35"
               alt="Sala de Aula"
             />
           </div>
@@ -40,50 +46,78 @@ const ProfessorDashboard = () => {
           <div className="absolute inset-0 bg-gradient-aurora-overlay" />
 
           <div className="absolute inset-0 flex items-center px-8 md:px-12 lg:px-16">
-            <div className="relative z-10 flex flex-col items-end justify-between w-full gap-8 md:flex-row">
-              <div className="max-w-2xl space-y-6">
-                <span className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-bold tracking-wider uppercase border rounded-full shadow-lg bg-card/10 backdrop-blur-md border-card/20 text-primary-foreground/80">
-                  Ambiente Docente
-                </span>
-                <h1 className="text-4xl font-bold leading-tight md:text-5xl lg:text-6xl font-display drop-shadow-xl text-primary-foreground">
+            <div className="relative z-10 flex flex-col items-end justify-between w-full gap-6 md:flex-row">
+              <div className="max-w-2xl space-y-5">
+                <motion.span
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.2 }}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 text-[10px] font-bold tracking-wider uppercase border rounded-full bg-card/10 backdrop-blur-md border-card/20 text-primary-foreground/70"
+                >
+                  Portal Docente
+                </motion.span>
+                <motion.h1
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-4xl font-bold leading-tight md:text-5xl font-display drop-shadow-xl text-primary-foreground"
+                >
                   Olá, <span className="text-gradient-aurora">Professor</span>.
-                </h1>
+                </motion.h1>
 
-                <div className="flex flex-wrap gap-4 mt-4">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.4 }}
+                  className="flex flex-wrap gap-3"
+                >
                   {[
-                    { icon: "fas fa-layer-group", value: "6", label: "Turmas", colorClass: "bg-primary/20 text-primary-foreground/80" },
-                    { icon: "fas fa-user-graduate", value: "187", label: "Alunos", colorClass: "bg-success/20 text-success-foreground/80" },
-                    { icon: "fas fa-clock", value: "3", label: "Hoje", colorClass: "bg-warning/20 text-warning-foreground/80" },
+                    { icon: "fas fa-layer-group", value: "6", label: "Turmas", bg: "bg-primary/15" },
+                    { icon: "fas fa-user-graduate", value: "187", label: "Alunos", bg: "bg-success/15" },
+                    { icon: "fas fa-clock", value: "3", label: "Hoje", bg: "bg-warning/15" },
                   ].map((stat) => (
-                    <div key={stat.label} className="flex items-center gap-3 px-4 py-2 border bg-card/10 backdrop-blur-md rounded-xl border-card/10">
-                      <div className={`flex items-center justify-center w-8 h-8 rounded-lg ${stat.colorClass}`}>
-                        <i className={stat.icon} />
+                    <div key={stat.label} className="flex items-center gap-2.5 px-4 py-2.5 bg-card/10 backdrop-blur-md rounded-xl border border-card/10">
+                      <div className={`flex items-center justify-center w-8 h-8 rounded-lg ${stat.bg} text-primary-foreground/80`}>
+                        <i className={`${stat.icon} text-sm`} />
                       </div>
                       <div>
                         <p className="text-lg font-bold leading-none text-primary-foreground">{stat.value}</p>
-                        <p className="text-[10px] uppercase font-bold tracking-wider text-primary-foreground/60">{stat.label}</p>
+                        <p className="text-[9px] uppercase font-bold tracking-wider text-primary-foreground/50">{stat.label}</p>
                       </div>
                     </div>
                   ))}
-                </div>
+                </motion.div>
               </div>
 
-              <div className="flex flex-wrap gap-3">
-                <button className="flex items-center gap-3 px-6 py-3 font-bold transition-all shadow-xl bg-card text-foreground rounded-2xl hover:bg-muted hover:-translate-y-1">
+              <motion.div
+                initial={{ opacity: 0, x: 16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 }}
+              >
+                <motion.button
+                  whileHover={{ scale: 1.04, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-3 px-6 py-3.5 font-bold bg-card text-foreground rounded-2xl shadow-xl hover:shadow-elevated transition-all"
+                >
                   <i className="fas fa-plus" /> Nova Turma
-                </button>
-              </div>
+                </motion.button>
+              </motion.div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Grade Horária */}
-        <div className="glass-card rounded-[2.5rem] shadow-glass overflow-hidden">
-          <div className="flex flex-col items-center justify-between gap-4 p-6 border-b border-primary/10 sm:flex-row">
-            <h2 className="flex items-center gap-2 text-xl font-bold text-foreground">
-              <span className="w-2 h-6 bg-primary rounded-full" /> Grade Horária
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="glass-card-strong rounded-[2rem] overflow-hidden"
+        >
+          <div className="flex flex-col items-center justify-between gap-4 p-6 border-b border-border/20 sm:flex-row">
+            <h2 className="flex items-center gap-3 text-lg font-bold text-foreground">
+              <span className="w-1 h-6 bg-gradient-to-b from-primary to-secondary rounded-full" /> Grade Horária
             </h2>
-            <div className="flex p-1 bg-muted rounded-xl">
+            <div className="flex p-1 glass-surface rounded-xl">
               {(["manha", "tarde"] as const).map((p) => (
                 <button
                   key={p}
@@ -97,35 +131,38 @@ const ProfessorDashboard = () => {
               ))}
             </div>
           </div>
-          <div className="overflow-x-auto">
+          <div className="overflow-x-auto custom-scrollbar">
             <table className="w-full min-w-[800px]">
               <thead>
-                <tr className="bg-primary/5">
-                  <th className="w-32 px-6 py-4 text-xs font-bold text-left uppercase text-primary/70">Horário</th>
+                <tr className="bg-muted/15">
+                  <th className="w-28 px-5 py-4 text-[10px] font-bold text-left uppercase tracking-wider text-muted-foreground/60">Horário</th>
                   {diasSemana.map((dia) => (
-                    <th key={dia} className="w-1/5 px-6 py-4 text-xs font-bold text-center uppercase text-primary/70">{dia}</th>
+                    <th key={dia} className="w-1/5 px-5 py-4 text-[10px] font-bold text-center uppercase tracking-wider text-muted-foreground/60">{dia}</th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-muted">
+              <tbody className="divide-y divide-border/15">
                 {filteredHorarios.map((tempo) => (
-                  <tr key={tempo} className="transition-colors hover:bg-card/50">
-                    <td className="px-6 py-4 text-xs font-bold border-r text-muted-foreground border-muted bg-muted/30">{tempo}</td>
+                  <tr key={tempo} className="hover:bg-primary/3 transition">
+                    <td className="px-5 py-4 text-xs font-bold border-r border-border/15 text-muted-foreground/60 bg-muted/10 tabular-nums">{tempo}</td>
                     {diasSemana.map((dia) => {
                       const item = gradeMock[tempo]?.[dia];
                       return (
-                        <td key={dia} className="relative h-24 p-2 align-top border-r border-dashed border-muted last:border-0 group">
+                        <td key={dia} className="relative h-20 p-2 align-top border-r border-dashed border-border/15 last:border-0 group">
                           {item ? (
-                            <div className="relative block w-full h-full p-3 transition-all border shadow-sm rounded-2xl border-primary/20 bg-primary/5 hover:bg-primary/10 cursor-pointer">
+                            <motion.div
+                              whileHover={{ scale: 1.03 }}
+                              className="block w-full h-full p-3 glass-surface rounded-xl hover:bg-primary/5 cursor-pointer transition-colors"
+                            >
                               <h4 className="text-sm font-bold truncate text-primary">{item.nome}</h4>
-                              <div className="flex items-center gap-2 mt-2 opacity-70">
-                                <i className="fas fa-user-graduate text-[10px]" />
-                                <span className="text-[10px] font-bold">{item.alunos}</span>
+                              <div className="flex items-center gap-1.5 mt-1.5 text-muted-foreground/50">
+                                <i className="fas fa-user-graduate text-[9px]" />
+                                <span className="text-[10px] font-semibold">{item.alunos}</span>
                               </div>
-                            </div>
+                            </motion.div>
                           ) : (
-                            <div className="flex items-center justify-center w-full h-full transition-all border-2 border-transparent opacity-0 cursor-pointer rounded-xl group-hover:opacity-100 hover:bg-muted hover:border-dashed hover:border-muted-foreground/30">
-                              <i className="fas fa-plus text-muted-foreground/40" />
+                            <div className="flex items-center justify-center w-full h-full opacity-0 cursor-pointer rounded-xl group-hover:opacity-100 hover:bg-muted/30 transition-all">
+                              <i className="fas fa-plus text-muted-foreground/25 text-xs" />
                             </div>
                           )}
                         </td>
@@ -136,56 +173,70 @@ const ProfessorDashboard = () => {
               </tbody>
             </table>
           </div>
-        </div>
+        </motion.div>
 
         {/* Bottom row */}
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          {/* Highlight card */}
-          <div className="lg:col-span-2 relative rounded-[2rem] bg-gradient-highlight p-8 text-primary-foreground overflow-hidden shadow-xl flex flex-col justify-center min-h-[260px] group">
-            <div className="absolute top-0 right-0 w-80 h-80 translate-x-1/3 -translate-y-1/3 rounded-full bg-card/10 blur-3xl" />
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="lg:col-span-2 relative rounded-[2rem] bg-gradient-highlight p-9 text-primary-foreground overflow-hidden shadow-elevated flex flex-col justify-center min-h-[240px] group"
+          >
+            <div className="absolute top-0 right-0 w-72 h-72 translate-x-1/3 -translate-y-1/3 rounded-full bg-card/8 blur-3xl" />
             <div className="relative z-10 max-w-lg">
-              <span className="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wide uppercase border rounded-lg bg-card/20 backdrop-blur-md border-card/20">
+              <span className="inline-block px-3 py-1 mb-4 text-[10px] font-bold tracking-wide uppercase border rounded-lg bg-card/15 backdrop-blur-md border-card/15">
                 <i className="mr-1 fas fa-lightbulb text-warning" /> Dica Pedagógica
               </span>
-              <h3 className="mb-3 text-2xl font-bold md:text-3xl font-display">Planejamento Semanal</h3>
-              <p className="mb-6 text-base leading-relaxed opacity-90">
-                Organize suas aulas da semana, defina objetivos claros e acompanhe o progresso dos seus alunos em tempo real.
+              <h3 className="mb-3 text-2xl font-bold font-display">Planejamento Semanal</h3>
+              <p className="mb-6 text-sm leading-relaxed opacity-80">
+                Organize suas aulas da semana, defina objetivos claros e acompanhe o progresso dos seus alunos.
               </p>
-              <Link
-                to="/professor/planejamento"
-                className="inline-flex items-center gap-2 px-6 py-3 font-bold transition-all shadow-lg bg-card text-secondary rounded-xl hover:bg-muted hover:scale-105"
-              >
-                Planejar Aulas <i className="fas fa-arrow-right text-xs" />
-              </Link>
+              <motion.div whileHover={{ scale: 1.04 }}>
+                <Link
+                  to="/professor/planejamento"
+                  className="inline-flex items-center gap-2 px-6 py-3 font-bold bg-card text-secondary rounded-xl shadow-lg transition-all"
+                >
+                  Planejar <i className="fas fa-arrow-right text-xs" />
+                </Link>
+              </motion.div>
             </div>
-            <i className="absolute transition-transform duration-500 opacity-20 fas fa-chalkboard text-[10rem] -right-6 -bottom-8 rotate-12 group-hover:rotate-6 group-hover:scale-110" />
-          </div>
+            <i className="absolute opacity-10 fas fa-chalkboard text-[9rem] -right-4 -bottom-6 rotate-12 group-hover:rotate-6 transition-transform duration-700" />
+          </motion.div>
 
-          {/* Quick stats */}
-          <div className="glass-card rounded-[2rem] shadow-glass p-8 flex flex-col">
-            <h4 className="flex items-center gap-3 mb-6 text-xl font-bold text-foreground">
-              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-success/20">
-                <i className="text-success fas fa-chart-bar" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="glass-card-strong rounded-[2rem] p-7 flex flex-col"
+          >
+            <h4 className="flex items-center gap-3 mb-5 text-base font-bold text-foreground">
+              <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-success/15 text-success">
+                <i className="fas fa-chart-bar text-sm" />
               </div>
               Resumo Rápido
             </h4>
-            <div className="space-y-4 flex-1">
+            <div className="space-y-2.5 flex-1">
               {[
                 { label: "Aulas esta semana", value: "18", icon: "fas fa-calendar-check", color: "text-primary" },
                 { label: "Atividades pendentes", value: "5", icon: "fas fa-tasks", color: "text-warning" },
                 { label: "Avaliações corrigidas", value: "42", icon: "fas fa-check-circle", color: "text-success" },
                 { label: "Presença média", value: "94%", icon: "fas fa-user-check", color: "text-secondary" },
               ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between p-3 rounded-xl bg-card/60 hover:bg-card transition-colors">
+                <motion.div
+                  key={item.label}
+                  whileHover={{ x: 3 }}
+                  className="flex items-center justify-between p-3.5 rounded-xl glass-surface hover:bg-card/60 transition-colors"
+                >
                   <div className="flex items-center gap-3">
                     <i className={`${item.icon} ${item.color} text-sm`} />
                     <span className="text-sm font-medium text-foreground">{item.label}</span>
                   </div>
-                  <span className={`text-lg font-bold ${item.color}`}>{item.value}</span>
-                </div>
+                  <span className={`text-lg font-bold font-display ${item.color}`}>{item.value}</span>
+                </motion.div>
               ))}
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </AppLayout>
